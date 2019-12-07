@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <header>
+      <h1>BreathWatch Options</h1>
+    </header>
+
+    <section>
+      <h2>Awareness Reminder Interval</h2>
+      <p>How often do you want the reminders to pop up?</p>
+      <select id="interval">
+        <option value="60">1 hour</option>
+        <option value="30">30 minutes</option>
+        <option value="15">15 minutes</option>
+      </select>
+
+      <h2>Awareness Reminder Duration</h2>
+      <p>How long do you want the reminder to stay?</p>
+      <select id="duration">
+        <option value="1">1 minute</option>
+        <option value="2">2 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="indefinitely">Indefinitely</option>
+        <option value="clear">Clear automatically</option>
+      </select>
+    </section>
+
+    <div id="status"></div>
+    <button id="save">Save</button>
+
+    <script src="options.js"></script>
+  </body>
+</html>
+
