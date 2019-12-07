@@ -25,9 +25,9 @@ function restoreOptions () {
     awarenessReminderDuration: defaultDuration,
   }, items => {
     document.getElementById('interval').value = items.awarenessReminderInterval
-    document.getElementById('duration').value = items.awarenessReminderDuration;
+    document.getElementById('duration').value = items.awarenessReminderDuration
   })
 }
 
-document.addEventListener('DOMContentLoaded', restore_options)
-document.getElementById('save').addEventListener('click', save_options)
+document.addEventListener('DOMContentLoaded', restoreOptions)
+document.getElementById('save').addEventListener('click', saveOptions)
