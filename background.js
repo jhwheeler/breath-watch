@@ -1,6 +1,8 @@
 function triggerReminder () {
-  chrome.storage.sync.set({ openedReminder: Date.now() }, () => {
-    console.log('watch your breath now: ', Date.now())
+  const timeNow = Date.now()
+
+  chrome.storage.sync.set({ openedReminder: timeNow }, () => {
+    console.log('watch your breath now: ', timeNow)
   })
 
   const notificationOptions = {
@@ -11,11 +13,17 @@ function triggerReminder () {
     requireInteraction: true,
   }
 
-  chrome.notifications.create(`breath_watch_reminder_${Date.now()}`, notificationOptions)
+  const notificationId = `breath_watch_reminder_${timeNow}`
+  chrome.notifications.create(notificationId, notificationOptions)
+
+  const timeToPersist = 60000
+  setTimeout(() => {
+    chrome.notifications.clear(notificationId)
+  }, timeToPersist)
 }
 
 chrome.runtime.onInstalled.addListener(() => triggerReminder())
 chrome.runtime.onStartup.addListener(() => triggerReminder())
-chrome.alarms.create("BreathWatch Alert", { periodInMinutes: 1 })
+chrome.alarms.create("BreathWatch Alert", { periodInMinutes: 15 })
 
 chrome.alarms.onAlarm.addListener(() => triggerReminder())
