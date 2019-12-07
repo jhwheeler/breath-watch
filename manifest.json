@@ -2,5 +2,9 @@
   "name": "BreathWatch",
   "version": "1.0",
   "description": "Reminder to watch your breath and become more mindful throughout your day",
-  "manifest_version": 2
+  "manifest_version": 2,
+  "permissions": ["storage", "alarms"],
+  "background": {
+    "scripts": ["background.js"]
+  }
 }
