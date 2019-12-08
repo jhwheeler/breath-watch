@@ -6,29 +6,41 @@ const useOptions = callback => chrome.storage.sync.get({
     awarenessReminderDuration: defaultDuration,
   }, options => callback(options))
 
-function createNotification (id) {
+function clearPreviousNotifications () {
+  chrome.notifications.getAll(notifications => {
+    const ids = Object.keys(notifications)
+    ids.forEach(id => {
+      if (id.includes('breath_watch_reminder')) {
+        chrome.notifications.clear(id)
+      }
+    })
+  })
+}
+
+function createNotification ({ id, requireInteraction }) {
+  clearPreviousNotifications()
+
   const notificationOptions = {
     type: "basic",
     title: "Watch your breath",
     message: "It's time to become mindful of your breath.",
     iconUrl: "images/get_started128.png",
-    requireInteraction: true,
+    requireInteraction,
   }
 
   chrome.notifications.create(id, notificationOptions)
 }
-
-const parseDuration = duration => duration  === 'indefinitely' ? 0 : duration === 'clear' ? 6000 : parseInt(duration, 10)
 
 function triggerReminder () {
   const timeNow = Date.now()
   const id = `breath_watch_reminder_${timeNow}`
   let timeToPersist = defaultDuration * 60000
 
-  createNotification(id)
-
   useOptions(options => {
-    if (options) timeToPersist = parseDuration(options.awarenessReminderDuration)
+    if (options) timeToPersist = parseInt(options.awarenessReminderDuration, 10)
+
+    const requireInteraction = timeToPersist !== 0
+    createNotification({ id, requireInteraction })
 
     if (timeToPersist < 1) return
     setTimeout(() => chrome.notifications.clear(id), timeToPersist)
@@ -62,6 +74,6 @@ chrome.storage.onChanged.addListener(changes => {
   }, {})
 
   if (filteredChanges) {
-    createInterval({ trigger: true })
+    createInterval({ trigger: false })
   }
 })
