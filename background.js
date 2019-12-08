@@ -1,10 +1,12 @@
-function triggerReminder () {
-  const timeNow = Date.now()
+const defaultInterval = 60
+const defaultDuration = 1
 
-  chrome.storage.sync.set({ openedReminder: timeNow }, () => {
-    console.log('watch your breath now: ', timeNow)
-  })
+const useOptions = callback => chrome.storage.sync.get({
+    awarenessReminderInterval: defaultInterval,
+    awarenessReminderDuration: defaultDuration,
+  }, options => callback(options))
 
+function createNotification (id) {
   const notificationOptions = {
     type: "basic",
     title: "Watch your breath",
@@ -13,17 +15,53 @@ function triggerReminder () {
     requireInteraction: true,
   }
 
-  const notificationId = `breath_watch_reminder_${timeNow}`
-  chrome.notifications.create(notificationId, notificationOptions)
-
-  const timeToPersist = 60000
-  setTimeout(() => {
-    chrome.notifications.clear(notificationId)
-  }, timeToPersist)
+  chrome.notifications.create(id, notificationOptions)
 }
 
-chrome.runtime.onInstalled.addListener(() => triggerReminder())
-chrome.runtime.onStartup.addListener(() => triggerReminder())
-chrome.alarms.create("BreathWatch Alert", { periodInMinutes: 15 })
+const parseDuration = duration => duration  === 'indefinitely' ? 0 : duration === 'clear' ? 6000 : parseInt(duration, 10)
 
+function triggerReminder () {
+  const timeNow = Date.now()
+  const id = `breath_watch_reminder_${timeNow}`
+  let timeToPersist = defaultDuration * 60000
+
+  createNotification(id)
+
+  useOptions(options => {
+    if (options) timeToPersist = parseDuration(options.awarenessReminderDuration)
+
+    if (timeToPersist < 1) return
+    setTimeout(() => chrome.notifications.clear(id), timeToPersist)
+  })
+}
+
+function createInterval ({ trigger }) {
+  let periodInMinutes = defaultInterval
+  useOptions(options => {
+    if (options) periodInMinutes = parseInt(options.awarenessReminderInterval, 10)
+    chrome.alarms.create("BreathWatch Alert", { periodInMinutes })
+
+    if (trigger) triggerReminder()
+  })
+}
+
+chrome.runtime.onInstalled.addListener(() => createInterval({ trigger: true }))
+chrome.runtime.onStartup.addListener(() => createInterval({ trigger: true}))
 chrome.alarms.onAlarm.addListener(() => triggerReminder())
+
+chrome.storage.onChanged.addListener(changes => {
+  const valuesToWatch = ['awarenessReminderInterval', 'awarenessReminderDuration']
+
+  const filteredChanges = valuesToWatch.reduce((obj, key) => {
+    const filtered = {
+      ...obj,
+      [key]: changes[key]
+    }
+
+    return changes[key] ? filtered : obj
+  }, {})
+
+  if (filteredChanges) {
+    createInterval({ trigger: true })
+  }
+})

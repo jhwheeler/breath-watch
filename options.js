@@ -6,13 +6,12 @@ function saveOptions () {
     awarenessReminderInterval: interval,
     awarenessReminderDuration: duration,
   }, () => {
-    // Update status to let user know options were saved.
     var status = document.getElementById('status')
     status.textContent = 'Options saved'
 
     setTimeout(() => {
       status.textContent = ''
-    }, 750)
+    }, 2000)
   });
 }
 
