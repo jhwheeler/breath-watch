@@ -16,8 +16,8 @@ function saveOptions () {
 }
 
 function restoreOptions () {
-  const defaultInterval = '60'
-  const defaultDuration = '1'
+  const defaultInterval = 60
+  const defaultDuration = 1
 
   chrome.storage.sync.get({
     awarenessReminderInterval: defaultInterval,
