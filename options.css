@@ -32,6 +32,14 @@ button {
   font-family: Helvetica;
 }
 
+button:hover {
+  background-color: rgb(37, 216, 206);
+}
+
+button:focus {
+  outline: 0;
+}
+
 header h1 {
   margin-top: 0;
 }
@@ -59,4 +67,9 @@ select:focus {
 
 option {
   background-color: #2A3F55; 
+}
+
+#status {
+  margin-bottom: 0.5rem;
+  transition: opacity 0.5s linear;
 }
