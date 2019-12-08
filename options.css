@@ -5,23 +5,27 @@
 }
 
 body {
-  background: rgb(66, 80, 192);
+  background: linear-gradient(#2a4a9c, #2fb8f4);
   color: rgb(250, 250, 250);
   margin: 0;
   padding: 1rem;
-  width: 22rem;
-  font-family: Helvetica;
+  width: 30rem;
+  font-family: 'Montserrat', Helvetica, sans-serif;
   font-size: 14px;
 }
 
+h2 {
+  margin-top: 2rem;
+}
+
 button {
-  background-color: rgb(41, 233, 223);
+  background-color: rgb(255, 128, 38);
   border: none;
   border-radius: 5px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
   color: white;
   font-size: 1rem;
-  padding: 0.65rem 1.6rem;
+  padding: 0.5rem 1.6rem;
   width: 7rem;
   height: 2rem;
   cursor: pointer;
@@ -33,15 +37,27 @@ button {
 }
 
 button:hover {
-  background-color: rgb(37, 216, 206);
+  background-color: rgb(255, 163, 98);
 }
 
 button:focus {
   outline: 0;
 }
 
-h1 {
-  margin: 0;
+.logo {
+  width: 100%;
+  padding-bottom: 0.2rem;
+  margin-bottom: 0.8rem;
+}
+
+img {
+  width: 60%;
+  height: auto;
+}
+
+h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
 }
 
 select {
