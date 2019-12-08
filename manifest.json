@@ -1,6 +1,6 @@
 {
   "name": "BreathWatch",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Reminders to watch your breath and become more mindful throughout your day",
   "permissions": ["storage", "alarms", "notifications"],
   "background": {
