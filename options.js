@@ -1,12 +1,12 @@
 function saveOptions () {
-  var interval = document.getElementById('interval').value
-  var duration = document.getElementById('duration').value
+  const interval = document.getElementById('interval').value
+  const duration = document.getElementById('duration').value
 
   chrome.storage.sync.set({
     awarenessReminderInterval: interval,
     awarenessReminderDuration: duration,
   }, () => {
-    var status = document.getElementById('status')
+    const status = document.getElementById('status')
     status.textContent = 'Options saved'
 
     setTimeout(() => {
